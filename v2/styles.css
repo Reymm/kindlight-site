@@ -119,18 +119,25 @@ a:hover { color: var(--accent); }
 .store-badge.on-dark:hover { background: #fff; color: var(--dark); }
 
 /* Store badges (official artwork) */
-.badges { gap: .7rem; }
-/* Friendly white store pills, KeptArt style: rounded, bordered, soft shadow. */
-.store-pill {
-  display: inline-flex; align-items: center; gap: .55rem;
-  background: #fff; border: 1.5px solid rgba(43,33,24,.85); border-radius: 14px;
-  padding: .4rem .85rem .45rem; box-shadow: 0 3px 10px rgba(62,32,8,.13);
+.badges { gap: .6rem; margin-top: .9rem; }
+/* Hero primary button: our own CTA leads, like ianacare and Headspace. */
+.hero-cta {
+  display: inline-block; background: var(--accent); color: #fff; text-decoration: none;
+  font-weight: 600; font-size: 1.02rem; padding: .85rem 1.7rem; border-radius: 999px;
+  box-shadow: 0 8px 20px rgba(180,85,45,.32);
 }
-.store-pill .glyph-apple { height: 27px; width: auto; display: block; }
-.store-pill .glyph-play { height: 24px; width: auto; display: block; }
+.hero-cta:active { transform: translateY(1px); box-shadow: 0 3px 8px rgba(180,85,45,.30); }
+/* Friendly white store pills: rounded, bordered, soft shadow, kept secondary. */
+.store-pill {
+  display: inline-flex; align-items: center; gap: .45rem;
+  background: #fff; border: 1.5px solid rgba(43,33,24,.85); border-radius: 11px;
+  padding: .3rem .65rem .33rem; box-shadow: 0 3px 10px rgba(62,32,8,.13);
+}
+.store-pill .glyph-apple { height: 21px; width: auto; display: block; }
+.store-pill .glyph-play { height: 19px; width: auto; display: block; }
 .store-pill .pill-lines { display: flex; flex-direction: column; line-height: 1.12; }
-.store-pill .pill-lines small { font-size: .56rem; letter-spacing: .03em; color: #3c3c43; font-weight: 500; }
-.store-pill .pill-lines strong { font-size: 1.04rem; font-weight: 600; color: #111; letter-spacing: -.01em; }
+.store-pill .pill-lines small { font-size: .47rem; letter-spacing: .03em; color: #3c3c43; font-weight: 500; }
+.store-pill .pill-lines strong { font-size: .86rem; font-weight: 600; color: #111; letter-spacing: -.01em; }
 .band-btn {
   display: inline-block; background: var(--cream); color: var(--dark);
   font-weight: 600; text-decoration: none; border-radius: 12px; padding: .62rem 1.25rem;
