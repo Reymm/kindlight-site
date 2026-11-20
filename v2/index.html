@@ -42,7 +42,7 @@
         </div>
         <p class="store-note">Kindlight is in final testing and not yet on the App Store. The guidance below is free, right now.</p>
       </div>
-      <div class="phone-stage" aria-hidden="true">
+      <div class="phone-stage">
         <div class="phone">
           <div class="phone-screen">
             <div class="phone-appbar">
@@ -57,7 +57,12 @@
               <strong>60-second step</strong>
               Agree, then redirect: walk with her to the kettle and put a warm cup in her hands.
             </div>
-            <div class="phone-listen"><span class="play">&#9654;</span> Hear it in a calm voice</div>
+            <button class="phone-listen" id="listenBtn" type="button"><span class="play" id="listenIcon">&#9654;</span> <span id="listenLabel">Hear it in a calm voice</span></button>
+            <div class="voice-toggle" role="group" aria-label="Choose a voice">
+              <button type="button" id="voiceFemale" class="active">Female voice</button>
+              <button type="button" id="voiceMale">Male voice</button>
+            </div>
+            <p class="phone-note">Live preview — tap and your own phone reads the line aloud, the same way the app speaks it.</p>
           </div>
         </div>
       </div>
@@ -256,5 +261,69 @@
   </div>
 </footer>
 
+<script>
+(function () {
+  var btn = document.getElementById('listenBtn');
+  var label = document.getElementById('listenLabel');
+  var icon = document.getElementById('listenIcon');
+  var fBtn = document.getElementById('voiceFemale');
+  var mBtn = document.getElementById('voiceMale');
+  var text = "You're safe, Mom. I'm right here. Let's have some tea together.";
+  var gender = 'female';
+  if (!('speechSynthesis' in window)) {
+    label.textContent = 'Voice is not available in this browser';
+    btn.disabled = true;
+    return;
+  }
+  var FEMALE = ['samantha', 'karen', 'moira', 'tessa', 'fiona', 'susan', 'zira', 'aria', 'jenny', 'female', 'google us english'];
+  var MALE = ['daniel', 'alex', 'david', 'mark', 'george', 'oliver', 'james', 'male'];
+  function pickVoice() {
+    var voices = window.speechSynthesis.getVoices().filter(function (v) {
+      return v.lang && v.lang.toLowerCase().indexOf('en') === 0;
+    });
+    if (!voices.length) return null;
+    var names = gender === 'female' ? FEMALE : MALE;
+    for (var i = 0; i < names.length; i++) {
+      for (var j = 0; j < voices.length; j++) {
+        var n = voices[j].name.toLowerCase();
+        if (gender === 'male' && n.indexOf('female') !== -1) continue;
+        if (n.indexOf(names[i]) !== -1) return voices[j];
+      }
+    }
+    return voices[0];
+  }
+  if ('onvoiceschanged' in window.speechSynthesis) {
+    window.speechSynthesis.onvoiceschanged = function () { pickVoice(); };
+  }
+  function reset() {
+    label.textContent = 'Hear it in a calm voice';
+    icon.innerHTML = '&#9654;';
+  }
+  function speak() {
+    window.speechSynthesis.cancel();
+    var u = new SpeechSynthesisUtterance(text);
+    var v = pickVoice();
+    if (v) u.voice = v;
+    u.rate = 0.95;
+    u.onend = reset;
+    u.onerror = reset;
+    window.speechSynthesis.speak(u);
+    label.textContent = 'Tap to stop';
+    icon.innerHTML = '&#9632;';
+  }
+  btn.addEventListener('click', function () {
+    if (window.speechSynthesis.speaking) { window.speechSynthesis.cancel(); reset(); }
+    else speak();
+  });
+  function setGender(g) {
+    gender = g;
+    fBtn.classList.toggle('active', g === 'female');
+    mBtn.classList.toggle('active', g === 'male');
+    if (window.speechSynthesis.speaking) speak();
+  }
+  fBtn.addEventListener('click', function () { setGender('female'); });
+  mBtn.addEventListener('click', function () { setGender('male'); });
+})();
+</script>
 </body>
 </html>
